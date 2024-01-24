@@ -16,7 +16,11 @@ def read_calibrated_files_task(date_dt, input_folderpath, output_folderpath, sub
         root_filename = "file"
     filename = f"{root_filename}_{duration}M_{date_str}_{substructure}_CALIBRATED.csv"
 
-    df.to_csv(mpt.pjoin(output_folderpath, filename), float_format = "%.8e",date_format="%Y-%m-%dT%H:%M:%S.%fZ")
+    output_subfoldername = f'{date_dt[0].year:04d}_{date_dt[0].month:02d}_{date_dt[0].day:02d}'
+    output_subfolderpath = mpt.pjoin(output_folderpath, output_subfoldername)
+    mpt.create_folder(output_subfolderpath)
+
+    df.to_csv(mpt.pjoin(output_subfolderpath, filename), float_format = "%.8e",date_format="%Y-%m-%dT%H:%M:%S.%fZ")
 
 
 def read_calibrated_files(folderpath, substructure, start_dt, stop_dt, delta=1, root_filename=""):
@@ -244,20 +248,8 @@ if __name__ == "__main__":
         current_dt += periodicity
     print(date_dt_list)
 
-    parallel_task = mpt.parallel_decorator(read_calibrated_files_task, date_dt_list, input_folderpath, output_folderpath, substructure, 1, root_filename)
-    parallel_task()
+    # parallel_task = mpt.parallel_decorator(read_calibrated_files_task, date_dt_list, input_folderpath, output_folderpath, substructure, 1, root_filename)
+    # parallel_task()
 
-    # folderpath = r"C:\Users\md104209\Desktop\2022_06_01"
-    # substructure = 0
-    # start_dt = datetime(2022,6,1,0,0)
-    # stop_dt = datetime(2022,6,1,0,20)
-    # root_filename = "mpszefyros"
-    #
-    # df = read_calibrated_files(folderpath, substructure, start_dt, stop_dt, delta=0, root_filename=root_filename)
-    #
-    # # filename
-    # duration = int((stop_dt - start_dt).total_seconds()/60)
-    # date_str = start_dt.strftime("%Y_%m_%d_%Hh%Mm")
-    # filename = f"{root_filename}_{duration}M_{date_str}_{substructure}_CALIBRATED.csv"
-    #
-    # df.to_csv(filename, float_format = "%.8e",date_format="%Y-%m-%dT%H:%M:%S.%fZ")
+    # for date_dt in date_dt_list:
+    #     read_calibrated_files_task(date_dt, input_folderpath, output_folderpath, substructure, 1, root_filename)
