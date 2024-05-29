@@ -15,7 +15,7 @@ import morpho_toolbox as mpt
 
 def renameFilesInFolder():
 
-    folderpath = r"R:\data_MD\test_QS3\27112023\T_constante_position_constante\MPS\PROCESSED"
+    folderpath = r"C:\Users\md104209\Desktop\bidon"
 
     filename_list = sorted(os.listdir(folderpath))
     number_of_files = len(filename_list)
@@ -35,10 +35,10 @@ def renameFilesInFolder():
             hour = int(m["hour"])
             minute = int(m["minute"])
 
-            dt = datetime(year, month, day, hour, minute) - timedelta(hours=1)
+            dt = datetime(year, month, day, hour, minute)# - timedelta(hours=1)
             date = dt.strftime("%Y_%m_%d_%Hh%Mm")
 
-            filename_new = "_".join(["mpscalib", "1M", date, "0", "CALIBRATED"]) + ".csv"
+            filename_new = "_".join(["slkpontlagnieu", "20M", date, "2", "CALIBRATED"]) + ".csv"
 
             try:
                 os.rename(os.path.join(folderpath,filename), os.path.join(folderpath,filename_new))
@@ -55,35 +55,6 @@ def renameFilesInFolder():
             else:
                 print("Remaining time = {:.0f} s".format(tRemaining))
 
-
-def organizeDataFolder_task(filename, folderpath):
-
-    m = re.search(r"(?P<year>\d{4})_(?P<month>\d{2})_(?P<day>\d{2})",
-                  filename)
-
-    if m is not None and os.path.isfile(mpt.pjoin(folderpath, filename)):
-
-        subfoldername = f'{m["year"]}_{m["month"]}_{m["day"]}'
-        new_folderpath = mpt.pjoin(folderpath, subfoldername)
-
-        mpt.create_folder(new_folderpath)
-
-        filepath = mpt.pjoin(folderpath, filename)
-        new_filepath = mpt.pjoin(new_folderpath, filename)
-
-        shutil.move(filepath, new_filepath)
-
-        print(filename)
-
-    return
-
-def organizeDataFolder(folderpath):
-
-    filename_list = os.listdir(folderpath)
-
-    parallel_organizeDataFolder = mpt.parallel_decorator(organizeDataFolder_task, filename_list, folderpath)
-    parallel_organizeDataFolder()
-
 if __name__ == "__main__":
 
-    pass
+    renameFilesInFolder()

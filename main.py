@@ -1,5 +1,3 @@
-from functions import organizeDataFolder
+import morpho_toolbox as mpt
 
-if __name__ == "__main__":
-
-    organizeDataFolder(r"R:\data_MD\GEOCOMP\PROCESSED")
+mpt.organize_folder(r"R:\data_MD\ZEFYROS\2022_12\1M_mag")
